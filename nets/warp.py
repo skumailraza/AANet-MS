@@ -65,25 +65,32 @@ def disp_warp(img, disp, padding_mode='border'):
 
 
 def disp_warp_ms(x, disp):
-    size = x.size()
-    x = F.interpolate(x, size=disp.size()[-2:], mode='bilinear', align_corners=False)
+    size = disp.size()
+    if x.size()[-2:] != disp.size()[-2:]:   #resize disp to size of x
+        disp = disp.unsqueeze(1)
+        disp = F.interpolate(disp, size=x.size()[-2:], mode='bilinear', align_corners=False)
+        disp = disp.squeeze(1)
+
     bs, ch, h, w = x.size()
     bg, hg, wg = torch.meshgrid(torch.arange(0, bs), torch.arange(0, h), torch.arange(0, w))
 
     grid_b, grid_h, grid_w = bg.cuda(), hg.cuda(), wg.cuda()
-    # print(grid_w.shape, disp.shape)
+
     warped_gw = torch.sub(grid_w.float(), disp)
     grid = torch.stack([warped_gw, grid_h.float()], dim=-1)
     grid_normalized = ((grid * 2) / torch.Tensor([w, h]).cuda()) - 1
     output = F.grid_sample(x, grid_normalized, mode='bilinear', padding_mode='zeros')
-    output = F.interpolate(output, size=size[-2:], mode='bilinear', align_corners=False)
+
+    if x.size()[-2:] != disp.size()[-2:]:  # resize output back to original disp size
+        output = F.interpolate(output, size=size[-2:], mode='bilinear', align_corners=False)
+
     return output
 
 
 def pyramid_warp(img, disp):
-    """Warping by disparity
+    """Warping image features toowards disp disparity
     Args:
-        img: [B, 3, H, W]
+        img: feature pyramid
         disp: disparity pyramid
     Returns:
         warped_img: [B, 3, H, W]
