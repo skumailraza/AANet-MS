@@ -6,7 +6,7 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 --mode val \
 --checkpoint_dir checkpoints/aanet+_sceneflow \
 --data_dir /home/kraza/SceneFlow_Mixed \
---batch_size 16 \
+--batch_size 2 \
 --max_disp 24 \
 --val_batch_size 2 \
 --img_height 288 \
