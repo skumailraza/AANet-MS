@@ -19,10 +19,10 @@ class DisparityEstimation(nn.Module):
         prob_volume = F.softmax(cost_volume, dim=1)  # [B, D, H, W]
 
         if cost_volume.size(1) == self.max_disp:
-            disp_candidates = torch.arange(-self.max_disp//2, self.max_disp//2).type_as(prob_volume)
+            disp_candidates = torch.arange(-self.max_disp//2, self.max_disp//2 ).type_as(prob_volume)
         else:
             max_disp = prob_volume.size(1)  # current max disparity
-            disp_candidates = torch.arange(-max_disp//2, max_disp//2).type_as(prob_volume)
+            disp_candidates = torch.arange(-max_disp//2, max_disp//2 ).type_as(prob_volume)
 
         disp_candidates = disp_candidates.view(1, cost_volume.size(1), 1, 1)
         disp = torch.sum(prob_volume * disp_candidates, 1, keepdim=False)  # [B, H, W]

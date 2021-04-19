@@ -81,13 +81,19 @@ class StereoDRNetRefinement(nn.Module):
         # assert low_disp.dim() == 3
         # low_disp = low_disp.unsqueeze(1)  # [B, 1, H, W]
         # scale_factor = low_disp.size(-1) / left_img.size(-1)
+        # print('Disp : ',low_disp.size())
+        # print('Left : ',left_img.size())
+        # print('Right : ',right_img.size())
+        #
         # if scale_factor == 1.0:
         #     disp = low_disp
         # else:
         #     left_img = F.interpolate(left_img, size=low_disp.size()[-2:], mode='bilinear', align_corners=False)
         #     right_img = F.interpolate(right_img, size=low_disp.size()[-2:], mode='bilinear', align_corners=False)
         #     disp = low_disp
-        #
+        # print('Disp : ', low_disp.size())
+        # print('Left : ', left_img.size())
+        # print('Right : ', right_img.size())
         # # Warp right image to left view with current disparity
         # warped_right = disp_warp(right_img, disp)[0]  # [B, C, H, W]
         # error = warped_right - left_img  # [B, C, H, W]
@@ -103,6 +109,8 @@ class StereoDRNetRefinement(nn.Module):
         #
         # disp = F.relu(disp + residual_disp, inplace=True)  # [B, 1, H, W]
         # disp = disp.squeeze(1)  # [B, H, W]
+
+
         assert low_disp.dim() == 3
         low_disp = low_disp.unsqueeze(1)  # [B, 1, H, W]
         scale_factor = left_img.size(-1) / low_disp.size(-1)
