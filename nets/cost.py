@@ -44,10 +44,10 @@ class CostVolume(nn.Module):
                 if i > 0:
                     cost_volume[:, i + self.max_disp//2, :, i:] = (left_feature[:, :, :, i:] *
                                                 right_feature[:, :, :, :-i]).mean(dim=1)
-                    cost_volume[:, self.max_disp//2 - i, :, :-i] = (left_feature[:, :, :, :-i] *
+                    cost_volume[:, (self.max_disp//2) - i, :, :-i] = (left_feature[:, :, :, :-i] *
                                                                      right_feature[:, :, :, i:]).mean(dim=1)
                 else:
-                    cost_volume[:, i, :, :] = (left_feature * right_feature).mean(dim=1)
+                    cost_volume[:, i + self.max_disp//2, :, :] = (left_feature * right_feature).mean(dim=1)
 
         else:
             raise NotImplementedError
