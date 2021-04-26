@@ -2,7 +2,7 @@
 #cd nets/deform_conv/
 #sh build.sh
 # Train on Scene Flow training set
-CUDA_VISIBLE_DEVICES=0 python train.py \
+CUDA_VISIBLE_DEVICES=0,1 python train.py \
 --mode val \
 --checkpoint_dir checkpoints/aanet+_sceneflow \
 --data_dir /home/kraza/SceneFlow_Mixed \
@@ -15,7 +15,7 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 --val_img_width 960 \
 --feature_type ganet \
 --feature_pyramid \
---refinement_type stereodrnet \
+--refinement_type stereonet \
 --milestones 20,30,40,50,60 \
 --max_epoch 64 \
 --wandb 0 \

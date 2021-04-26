@@ -136,6 +136,7 @@ class Model(object):
                 img_summary['left'] = left
                 img_summary['right'] = right
                 img_summary['gt_disp'] = gt_disp
+                # print("GT Min/Max  : ", gt_disp.min(), gt_disp.max())
 
                 if args.load_pseudo_gt:
                     img_summary['pseudo_gt_disp'] = pseudo_gt_disp
@@ -146,6 +147,7 @@ class Model(object):
                     save_name = 'pred_disp' + str(len(pred_disp_pyramid) - s - 1)
                     save_value = pred_disp_pyramid[s]
                     img_summary[save_name] = save_value
+                # print("Disp Min/Max  : ", save_value.min(), save_value.max())
 
                 pred_disp = pred_disp_pyramid[-1]
 

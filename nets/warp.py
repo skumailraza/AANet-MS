@@ -67,8 +67,11 @@ def disp_warp(img, disp, padding_mode='border'):
 def disp_warp_ms(x, disp):
     size = disp.size()
     if x.size()[-2:] != disp.size()[-2:]:   #resize disp to size of x
+        # sf = disp.size()[-2:]/x.size()[-2:]
+        # print("Warp Scale factor: ", sf)
         disp = disp.unsqueeze(1)
         disp = F.interpolate(disp, size=x.size()[-2:], mode='bilinear', align_corners=False)
+
         disp = disp.squeeze(1)
 
     bs, ch, h, w = x.size()

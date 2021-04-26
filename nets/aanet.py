@@ -294,6 +294,7 @@ class AANet(nn.Module):
             aggregation = self.aggregation6(cost_volume)
         else:
             aggregation = self.aggregation(cost_volume)
+
         disparity_pyramid = self.disparity_computation(aggregation)
 
         return disparity_pyramid
@@ -337,7 +338,6 @@ class AANet(nn.Module):
                 else:
                     size = reversed([j.size()[-2:] for j in y])
                 disp_for_warping = self.disp_downsample(disparity_pyramid, size)
-                # disp_for_warping = disparity_pyramid
                 y_warped = pyramid_warp(y, disp_for_warping)
                 # print("==> x.size(): ", [j.size() for j in x])
                 # print("==> y.size(): ", [j.size() for j in y])
@@ -347,9 +347,13 @@ class AANet(nn.Module):
                 disp2_res = self.aa_head(x, y_warped, i)
                 # print("==> disp_res: ", [j.size() for j in disp2_res])
                 # print("==> max, min disp_res: ", [[j.max(), j.min()] for j in disp2_res])
+                if len(disparity_pyramid) == 1:
+                    size = [j.size()[-2:] for j in disp2_res]
+                else:
+                    size = [j.size()[-2:] for j in disp2_res]
 
-                disparity_pyramid = self.add_residual(disp_for_warping, disp2_res)
-                # print("==> disp_pyramid: ", [j.size() for j in disparity_pyramid])
+                disparity_pyramid = self.add_residual(self.disp_downsample(disparity_pyramid, size), disp2_res)
+
                 if i == 3:
                     disparity_pyramid += self.disparity_refinement(left_img, right_img,
                                                                    disparity_pyramid[-1])
