@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 #cd nets/deform_conv/
 #sh build.sh
-#sh compile.sh
-## Train on Scene Flow training set
-# python train.py \
-#--mode val \
-#--checkpoint_dir checkpoints/aanetms_sceneflow \
-#--data_dir /netscratch/kraza/SceneFlow_Mixed \
-#--batch_size 64 \
-#--max_disp 24 \
-#--val_batch_size 32 \
-#--img_height 288 \
-#--img_width 576 \
-#--val_img_height 576 \
-#--val_img_width 960 \
-#--feature_type ganet \
-#--feature_pyramid \
-#--refinement_type stereodrnet \
-#--milestones 20,30,40,50,60 \
-#--max_epoch 64 \
-#--wandb 1 \
-#--wbRunName "aanetms_sceneflow"
+sh compile.sh
+# Train on Scene Flow training set
+ python train.py \
+--mode val \
+--checkpoint_dir checkpoints/aanetms_sceneflow \
+--data_dir /netscratch/kraza/SceneFlow_Mixed \
+--batch_size 64 \
+--max_disp 24 \
+--val_batch_size 32 \
+--img_height 288 \
+--img_width 576 \
+--val_img_height 576 \
+--val_img_width 960 \
+--feature_type ganet \
+--feature_pyramid \
+--refinement_type stereodrnet \
+--milestones 20,30,40,50,60 \
+--max_epoch 64 \
+--wandb 1 \
+--wbRunName "aanetms_sceneflow"
 #exit
 
 # Train on mixed KITTI 2012 and KITTI 2015 training set
@@ -50,7 +50,7 @@
  python train.py \
 --data_dir /ds-av/public_datasets/kitti2015/raw \
 --dataset_name KITTI2015 \
---mode train_all \
+--mode val \
 --checkpoint_dir checkpoints/aanetms_kitti15 \
 --pretrained_aanet checkpoints/aanetms_sceneflow/aanet_latest.pth \
 --max_disp 24 \
@@ -78,7 +78,7 @@
  python train.py \
 --data_dir /ds-av/public_datasets/kitti2012/raw \
 --dataset_name KITTI2012 \
---mode train_all \
+--mode val \
 --checkpoint_dir checkpoints/aanetms_kitti12 \
 --pretrained_aanet checkpoints/aanetms_sceneflow/aanet_latest.pth \
 --max_disp 24 \

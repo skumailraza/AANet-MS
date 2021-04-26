@@ -4,7 +4,7 @@
 #source /root/.bashrc
 #conda activate aanet
 pip install --upgrade wandb
-pip install tensorboard
+pip install --upgrade tensorboard
 pip install -U scikit-image
 
 cd nets/deform_conv
