@@ -402,7 +402,7 @@ class GANetFeature(nn.Module):
 
     def __init__(self, feature_mdconv=False):
         super(GANetFeature, self).__init__()
-
+        print("++>> mdconv to use or not :", feature_mdconv)
         if feature_mdconv:
             self.conv_start = nn.Sequential(
                 BasicConv(3, 32, kernel_size=3, padding=1),

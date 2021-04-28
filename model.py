@@ -60,11 +60,11 @@ class Model(object):
             right = sample['right'].to(device)
             gt_disp = sample['disp'].to(device)  # [B, H, W]
 
-            mask = (gt_disp > 0) & (gt_disp < args.max_disp)
+            mask = (gt_disp > 0) & (gt_disp < 192)
 
             if args.load_pseudo_gt:
                 pseudo_gt_disp = sample['pseudo_disp'].to(device)
-                pseudo_mask = (pseudo_gt_disp > 0) & (pseudo_gt_disp < args.max_disp) & (~mask)  # inverse mask
+                pseudo_mask = (pseudo_gt_disp > 0) & (pseudo_gt_disp < 192) & (~mask)  # inverse mask
 
             if not mask.any():
                 continue
@@ -136,6 +136,7 @@ class Model(object):
                 img_summary['left'] = left
                 img_summary['right'] = right
                 img_summary['gt_disp'] = gt_disp
+                # print("GT Min/Max  : ", gt_disp.min(), gt_disp.max())
 
                 if args.load_pseudo_gt:
                     img_summary['pseudo_gt_disp'] = pseudo_gt_disp
@@ -146,6 +147,7 @@ class Model(object):
                     save_name = 'pred_disp' + str(len(pred_disp_pyramid) - s - 1)
                     save_value = pred_disp_pyramid[s]
                     img_summary[save_name] = save_value
+                # print("Disp Min/Max  : ", save_value.min(), save_value.max())
 
                 pred_disp = pred_disp_pyramid[-1]
 
@@ -252,7 +254,7 @@ class Model(object):
             left = sample['left'].to(self.device)  # [B, 3, H, W]
             right = sample['right'].to(self.device)
             gt_disp = sample['disp'].to(self.device)  # [B, H, W]
-            mask = (gt_disp > 0) & (gt_disp < args.max_disp)
+            mask = (gt_disp > 0) & (gt_disp < 192)
 
             if not mask.any():
                 continue

@@ -7,5 +7,5 @@ pip install --upgrade wandb
 pip install --upgrade tensorboard
 pip install -U scikit-image
 
-cd nets/deform_conv
-sh build.sh
+#cd nets/deform_conv
+#sh build.sh

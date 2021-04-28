@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Evaluate the best validation model on Scene Flow test set
-CUDA_VISIBLE_DEVICES=0 python train.py \
+ python train.py \
 --mode test \
 --checkpoint_dir checkpoints/aanet+_sceneflow \
 --batch_size 64 \
@@ -18,7 +18,7 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 --evaluate_only
 
 # Evaluate a specific model on Scene Flow test set
-CUDA_VISIBLE_DEVICES=0 python train.py \
+ python train.py \
 --mode test \
 --checkpoint_dir checkpoints/aanet+_sceneflow \
 --pretrained_aanet pretrained/aanet+_sceneflow-d3e13ef0.pth \

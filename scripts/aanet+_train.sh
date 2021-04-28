@@ -5,11 +5,11 @@ sh compile.sh
 # Train on Scene Flow training set
  python train.py \
 --mode val \
---checkpoint_dir checkpoints/aanetms_sceneflow \
+--checkpoint_dir checkpoints/aanetms_sceneflow_md_24 \
 --data_dir /netscratch/kraza/SceneFlow_Mixed \
---batch_size 64 \
+--batch_size 32 \
 --max_disp 24 \
---val_batch_size 32 \
+--val_batch_size 24 \
 --img_height 288 \
 --img_width 576 \
 --val_img_height 576 \
@@ -20,7 +20,7 @@ sh compile.sh
 --milestones 20,30,40,50,60 \
 --max_epoch 64 \
 --wandb 1 \
---wbRunName "aanetms_sceneflow"
+--wbRunName "aanetms_sceneflow_md_24"
 #exit
 
 # Train on mixed KITTI 2012 and KITTI 2015 training set
@@ -51,11 +51,11 @@ sh compile.sh
 --data_dir /ds-av/public_datasets/kitti2015/raw \
 --dataset_name KITTI2015 \
 --mode val \
---checkpoint_dir checkpoints/aanetms_kitti15 \
---pretrained_aanet checkpoints/aanetms_sceneflow/aanet_latest.pth \
+--checkpoint_dir checkpoints/aanetms_kitti15_md_24 \
+--pretrained_aanet checkpoints/aanetms_sceneflow_md_24/aanet_latest.pth \
 --max_disp 24 \
 --batch_size 32 \
---val_batch_size 32 \
+--val_batch_size 24 \
 --img_height 384 \
 --img_width 1248 \
 --val_img_height 384 \
@@ -71,7 +71,7 @@ sh compile.sh
 --save_ckpt_freq 100 \
 --no_validate \
 --wandb 1 \
---wbRunName "aanetms_kitti15"
+--wbRunName "aanetms_kitti15_md_24"
 
 
 # Train on KITTI 2012 training set
@@ -79,11 +79,11 @@ sh compile.sh
 --data_dir /ds-av/public_datasets/kitti2012/raw \
 --dataset_name KITTI2012 \
 --mode val \
---checkpoint_dir checkpoints/aanetms_kitti12 \
---pretrained_aanet checkpoints/aanetms_sceneflow/aanet_latest.pth \
+--checkpoint_dir checkpoints/aanetms_kitti12_md_24 \
+--pretrained_aanet checkpoints/aanetms_sceneflow_md_24/aanet_latest.pth \
 --max_disp 24 \
 --batch_size 32 \
---val_batch_size 32 \
+--val_batch_size 24 \
 --img_height 384 \
 --img_width 1248 \
 --val_img_height 384 \
@@ -99,5 +99,5 @@ sh compile.sh
 --save_ckpt_freq 100 \
 --no_validate \
 --wandb 1 \
---wbRunName "aanetms_kitti12"
+--wbRunName "aanetms_kitti12_md_24"
 

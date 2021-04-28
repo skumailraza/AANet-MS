@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # Timing on Scene Flow test set
-CUDA_VISIBLE_DEVICES=0 python inference.py \
+ python inference.py \
 --mode test \
---data_dir /home/kraza/SceneFlow_Mixed \
---pretrained_aanet pretrained/aanet_sceneflow-5aa5a24e.pth \
+--data_dir /netscratch/kraza/SceneFlow_Mixed \
+--pretrained_aanet checkpoints/aanetms_sceneflow_md_72/aanet_latest.pth \
+--max_disp 24 \
 --batch_size 1 \
 --img_height 576 \
 --img_width 960 \
@@ -15,11 +16,12 @@ CUDA_VISIBLE_DEVICES=0 python inference.py \
 --count_time
 
 # Timing on KITTI 2015 test set
-CUDA_VISIBLE_DEVICES=0 python inference.py \
+ python inference.py \
 --mode test \
---data_dir /mnt/serv-2101/public_datasets/kitti2015/raw \
+--max_disp 72 \
+--data_dir /ds-av/public_datasets/kitti2015/raw \
 --dataset_name KITTI2015 \
---pretrained_aanet pretrained/aanet_kitti15-fb2a0d23.pth \
+--pretrained_aanet checkpoints/aanetms_sceneflow_md_72/aanet_latest.pth \
 --batch_size 1 \
 --img_height 384 \
 --img_width 1248 \
