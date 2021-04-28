@@ -1,6 +1,7 @@
 import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+import torch.autograd.profiler as profiler
 
 import skimage.io
 import argparse
@@ -66,6 +67,9 @@ parser.add_argument('--visualize', action='store_true', help='Visualize disparit
 # Log
 parser.add_argument('--count_time', action='store_true', help='Inference on a subset for time counting only')
 parser.add_argument('--num_images', default=100, type=int, help='Number of images for inference')
+parser.add_argument('--torch_prof', action='store_true', help='Use PyTorch profiler')
+
+
 
 args = parser.parse_args()
 
@@ -163,16 +167,31 @@ def main():
 
         # Warpup
         if i == 0 and args.count_time:
-            with torch.no_grad():
-                for _ in range(10):
-                    aanet(left, right)
+            if args.torch_prof:
+                with torch.no_grad():
+                    with profiler.profile(record_shapes=True, use_cuda=True) as prof:
+                        with profiler.record_function("model_inference"):
+                            for _ in range(10):
+                                aanet(left, right)
+            else:
+                with torch.no_grad():
+                    for _ in range(10):
+                        aanet(left, right)
 
         num_imgs += left.size(0)
 
-        with torch.no_grad():
-            time_start = time.perf_counter()
-            pred_disp = aanet(left, right)[-1]  # [B, H, W]
-            inference_time += time.perf_counter() - time_start
+        if args.torch_prof:
+            with torch.no_grad():
+                with profiler.profile(record_shapes=True, use_cuda=True) as prof:
+                    with profiler.record_function("model_inference"):
+                        time_start = time.perf_counter()
+                        pred_disp = aanet(left, right)[-1]  # [B, H, W]
+                        inference_time += time.perf_counter() - time_start
+        else:
+            with torch.no_grad():
+                time_start = time.perf_counter()
+                pred_disp = aanet(left, right)[-1]  # [B, H, W]
+                inference_time += time.perf_counter() - time_start
 
         if pred_disp.size(-1) < left.size(-1):
             pred_disp = pred_disp.unsqueeze(1)  # [B, 1, H, W]
@@ -205,6 +224,8 @@ def main():
                 else:
                     skimage.io.imsave(save_name, (disp * 256.).astype(np.uint16))
 
+    if args.torch_prof:
+        print(prof.key_averages(group_by_input_shape=True).table(sort_by="cpu_time_total"))
     print('=> Mean inference time for %d images: %.3fs' % (num_imgs, inference_time / num_imgs))
 
 
